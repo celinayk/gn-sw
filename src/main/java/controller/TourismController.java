@@ -1,5 +1,7 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dto.TourismDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 public class TourismController {
 
     @GetMapping("/apitest")
-    public String callApi() {
+    public TourismDTO callApi() {
 
         StringBuilder result = new StringBuilder();
         try {
@@ -40,10 +42,13 @@ public class TourismController {
             }
             urlConnection.disconnect();
 
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(result.toString(), TourismDTO.class);
+
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
-        return result.toString();
     }
 }
